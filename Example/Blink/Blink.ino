@@ -13,5 +13,3 @@ void loop() {
   delay(1000);
   digitalWrite(ledPin, LOW);
 }
-
-// Test
