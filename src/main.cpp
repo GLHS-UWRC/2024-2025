@@ -3,6 +3,7 @@
 void setup() {
   
   Serial.begin(9600);
+  Serial.println("I'm awake!");
   pinMode(LED_BUILTIN, OUTPUT);
 }
 
