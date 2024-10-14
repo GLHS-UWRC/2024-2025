@@ -1,5 +1,8 @@
 #include <Arduino.h>
-#include <function.cpp>
+
+#define ClawSholder 0
+#define ClawElbow 1
+#define ClawGrip 2
 
 
 void setup() {
