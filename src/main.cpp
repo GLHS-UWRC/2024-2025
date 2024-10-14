@@ -1,4 +1,6 @@
 #include <Arduino.h>
+#include <function.cpp>
+
 
 void setup() {
   
@@ -8,6 +10,7 @@ void setup() {
 }
 
 void loop() {
+  Serial.println("Blinking...");
   digitalWrite(LED_BUILTIN, HIGH);
   delay(1000);
   digitalWrite(LED_BUILTIN, LOW);
