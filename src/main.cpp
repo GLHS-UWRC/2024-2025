@@ -4,6 +4,11 @@
 #define ClawElbow 1
 #define ClawGrip 2
 
+#define HorizontalLeft 3
+#define HorizontalRight 4
+#define VerticalLeft 5
+#define VerticalRight 6
+
 
 void setup() {
   
