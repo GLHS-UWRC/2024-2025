@@ -9,7 +9,6 @@
 #define VerticalLeft 5
 #define VerticalRight 6
 
-
 void setup() {
   
   Serial.begin(9600);
