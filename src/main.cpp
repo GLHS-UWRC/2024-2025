@@ -25,7 +25,7 @@
 #define ClawOpen 13
 #define ClawClose 14
 
-int readJoystick();
+int readJoystick(int pin);
 
 void setup() {
   
@@ -35,12 +35,12 @@ void setup() {
 }
 
   void loop() {
-    Serial.println(readJoystick());
+    Serial.println(readJoystick(A0));
     delay(100); // Add a small delay to make the output readable
   }
 
-  int readJoystick() {
-    int rawValue = analogRead(A0);
+  int readJoystick(int pin) {
+    int rawValue = analogRead(pin);
     int mappedValue = map(rawValue, 0, 1023, -255, 255);
     if (abs(mappedValue) < 10 && abs(mappedValue) > -10) {
       mappedValue = 0;
