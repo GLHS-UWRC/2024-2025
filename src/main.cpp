@@ -15,7 +15,7 @@
 
 // Controls
 
-#define DriverLH 7
+#define DriverLH 7 // Pins 4-7 is for the driver joysticks
 #define DriverLV 8
 #define DriverRH 9
 #define DriverRV 10
@@ -25,6 +25,7 @@
 #define ClawOpen 13
 #define ClawClose 14
 
+int readJoystick();
 
 void setup() {
   
@@ -33,10 +34,16 @@ void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
 }
 
-void loop() {
-  Serial.println("Blinking...");
-  digitalWrite(LED_BUILTIN, HIGH);
-  delay(1000);
-  digitalWrite(LED_BUILTIN, LOW);
-  delay(1000);
-}
+  void loop() {
+    Serial.println(readJoystick());
+    delay(100); // Add a small delay to make the output readable
+  }
+
+  int readJoystick() {
+    int rawValue = analogRead(A0);
+    int mappedValue = map(rawValue, 0, 1023, -255, 255);
+    if (abs(mappedValue) < 10 && abs(mappedValue) > -10) {
+      mappedValue = 0;
+    }
+    return mappedValue;
+  }
