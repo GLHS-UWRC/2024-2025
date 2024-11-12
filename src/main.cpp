@@ -1,4 +1,9 @@
 #include <Arduino.h>
+#include "Joystick.cpp"
+
+// Servo Control
+
+#define ServoControl A15
 
 // Claw
 
@@ -8,15 +13,19 @@
 
 // Drive
 
-#define HorizontalLeft 3
-#define HorizontalRight 4
-#define VerticalLeft 5
-#define VerticalRight 6
+#define HorizontalLeftP 3
+#define HorizontalLeftN 3
+#define HorizontalRightP 4
+#define HorizontalRightN 4
+#define VerticalLeftP 5
+#define VerticalRightN 6
+#define VerticalLeftP 5
+#define VerticalRightN 6
 
 // Controls
 
-#define DriverLH 7 // Pins 4-7 is for the driver joysticks
-#define DriverLV 8
+#define DriverLH A7
+#define DriverLV A8
 #define DriverRH 9
 #define DriverRV 10
 
@@ -36,7 +45,45 @@ void setup() {
 
   void loop() {
     Serial.println(readJoystick(A0));
-    delay(100); // Add a small delay to make the output readable
+    delay(100);
+
+    int horizontalBF = readJoystick(DriverLV); // Horizontal Back and Forth
+
+    if (horizontalBF > 0) {
+      analogWrite(HorizontalLeftP, HIGH);
+      analogWrite(HorizontalLeftN, LOW);
+      analogWrite(HorizontalRightP, HIGH);
+      analogWrite(HorizontalRightN, LOW);
+    } else if (horizontalBF < 0) {
+      analogWrite(HorizontalLeftP, LOW);
+      analogWrite(HorizontalLeftN, HIGH);
+      analogWrite(HorizontalRightP, LOW);
+      analogWrite(HorizontalRightN, HIGH);
+    } else {
+      analogWrite(HorizontalLeftP, LOW);
+      analogWrite(HorizontalLeftN, LOW);
+      analogWrite(HorizontalRightP, LOW);
+      analogWrite(HorizontalRightN, LOW);
+    }
+
+     int horizontalLR = readJoystick(DriverLH); // Horizontal Left and Right
+
+    if (horizontalLR > 0) {
+      analogWrite(HorizontalLeftP, HIGH);
+      analogWrite(HorizontalLeftN, LOW);
+      analogWrite(HorizontalRightP, LOW);
+      analogWrite(HorizontalRightN, HIGH);
+    } else if (horizontalLR < 0) {
+      analogWrite(HorizontalLeftP, LOW);
+      analogWrite(HorizontalLeftN, HIGH);
+      analogWrite(HorizontalRightP, HIGH);
+      analogWrite(HorizontalRightN, LOW);
+    } else {
+      analogWrite(HorizontalLeftP, LOW);
+      analogWrite(HorizontalLeftN, LOW);
+      analogWrite(HorizontalRightP, LOW);
+      analogWrite(HorizontalRightN, LOW);
+    }
   }
 
   int readJoystick(int pin) {
