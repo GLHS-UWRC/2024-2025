@@ -25,7 +25,7 @@
 
 // Controls
 
-#define DriverLH A1 // A7
+#define DriverLH A5 // A7
 #define DriverLV A0 // A8
 #define DriverRH 9
 #define DriverRV 10
@@ -44,60 +44,60 @@ void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
 }
 
-  void loop() {
-    Serial.println(readJoystick(A0));
-    delay(100);
+void loop() {
+  Serial.println(readJoystick(A0));
+  delay(100);
 
-    int horizontalBF = readJoystick(DriverLV); // Horizontal Back and Forth
+  int horizontalBF = readJoystick(DriverLV); // Horizontal Back and Forth
 
-    if (horizontalBF > 0) {
-      Serial.println("Forward");
-      analogWrite(HorizontalLeftP, HIGH);
-      analogWrite(HorizontalLeftN, LOW);
-      analogWrite(HorizontalRightP, HIGH);
-      analogWrite(HorizontalRightN, LOW);
-    } else if (horizontalBF < 0) {
-      Serial.println("Backward");
-      analogWrite(HorizontalLeftP, LOW);
-      analogWrite(HorizontalLeftN, HIGH);
-      analogWrite(HorizontalRightP, LOW);
-      analogWrite(HorizontalRightN, HIGH);
-    } else {
-      Serial.println("Stop");
-      analogWrite(HorizontalLeftP, LOW);
-      analogWrite(HorizontalLeftN, LOW);
-      analogWrite(HorizontalRightP, LOW);
-      analogWrite(HorizontalRightN, LOW);
-    }
-
-     int horizontalLR = readJoystick(DriverLH); // Horizontal Left and Right
-
-    if (horizontalLR > 0) {
-      Serial.println("Right");
-      analogWrite(HorizontalLeftP, HIGH);
-      analogWrite(HorizontalLeftN, LOW);
-      analogWrite(HorizontalRightP, LOW);
-      analogWrite(HorizontalRightN, HIGH);
-    } else if (horizontalLR < 0) {
-      Serial.println("Left");
-      analogWrite(HorizontalLeftP, LOW);
-      analogWrite(HorizontalLeftN, HIGH);
-      analogWrite(HorizontalRightP, HIGH);
-      analogWrite(HorizontalRightN, LOW);
-    } else {
-      Serial.println("Straight");
-      analogWrite(HorizontalLeftP, LOW);
-      analogWrite(HorizontalLeftN, LOW);
-      analogWrite(HorizontalRightP, LOW);
-      analogWrite(HorizontalRightN, LOW);
-    }
+  if (horizontalBF > 0) {
+    Serial.println("Forward");
+    analogWrite(HorizontalLeftP, HIGH);
+    analogWrite(HorizontalLeftN, LOW);
+    analogWrite(HorizontalRightP, HIGH);
+    analogWrite(HorizontalRightN, LOW);
+  } else if (horizontalBF < 0) {
+    Serial.println("Backward");
+    analogWrite(HorizontalLeftP, LOW);
+    analogWrite(HorizontalLeftN, HIGH);
+    analogWrite(HorizontalRightP, LOW);
+    analogWrite(HorizontalRightN, HIGH);
+  } else {
+    Serial.println("Stop");
+    analogWrite(HorizontalLeftP, LOW);
+    analogWrite(HorizontalLeftN, LOW);
+    analogWrite(HorizontalRightP, LOW);
+    analogWrite(HorizontalRightN, LOW);
   }
 
-  int readJoystick(int pin) {
-    int rawValue = analogRead(pin);
-    int mappedValue = map(rawValue, 0, 1023, -255, 255);
-    if (abs(mappedValue) < 10 && abs(mappedValue) > -10) {
-      mappedValue = 0;
-    }
-    return mappedValue;
+    int horizontalLR = readJoystick(DriverLH); // Horizontal Left and Right
+
+  if (horizontalLR > 0) {
+    Serial.println("Right");
+    analogWrite(HorizontalLeftP, HIGH);
+    analogWrite(HorizontalLeftN, LOW);
+    analogWrite(HorizontalRightP, LOW);
+    analogWrite(HorizontalRightN, HIGH);
+  } else if (horizontalLR < 0) {
+    Serial.println("Left");
+    analogWrite(HorizontalLeftP, LOW);
+    analogWrite(HorizontalLeftN, HIGH);
+    analogWrite(HorizontalRightP, HIGH);
+    analogWrite(HorizontalRightN, LOW);
+  } else {
+    Serial.println("Straight");
+    analogWrite(HorizontalLeftP, LOW);
+    analogWrite(HorizontalLeftN, LOW);
+    analogWrite(HorizontalRightP, LOW);
+    analogWrite(HorizontalRightN, LOW);
   }
+}
+
+int readJoystick(int pin) {
+  int rawValue = analogRead(pin);
+  int mappedValue = map(rawValue, 0, 1023, -255, 255);
+  if (abs(mappedValue) < 50 && abs(mappedValue) > -50) {
+    mappedValue = 0;
+  }
+  return mappedValue;
+}
