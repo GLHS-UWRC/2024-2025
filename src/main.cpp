@@ -1,4 +1,5 @@
 #include <Arduino.h>
+// #include <Adafruit_PWMServoDriver.h>
 #include "Joystick.cpp"
 
 // Servo Control
@@ -24,8 +25,8 @@
 
 // Controls
 
-#define DriverLH A7
-#define DriverLV A8
+#define DriverLH A1 // A7
+#define DriverLV A0 // A8
 #define DriverRH 9
 #define DriverRV 10
 
@@ -50,16 +51,19 @@ void setup() {
     int horizontalBF = readJoystick(DriverLV); // Horizontal Back and Forth
 
     if (horizontalBF > 0) {
+      Serial.println("Forward");
       analogWrite(HorizontalLeftP, HIGH);
       analogWrite(HorizontalLeftN, LOW);
       analogWrite(HorizontalRightP, HIGH);
       analogWrite(HorizontalRightN, LOW);
     } else if (horizontalBF < 0) {
+      Serial.println("Backward");
       analogWrite(HorizontalLeftP, LOW);
       analogWrite(HorizontalLeftN, HIGH);
       analogWrite(HorizontalRightP, LOW);
       analogWrite(HorizontalRightN, HIGH);
     } else {
+      Serial.println("Stop");
       analogWrite(HorizontalLeftP, LOW);
       analogWrite(HorizontalLeftN, LOW);
       analogWrite(HorizontalRightP, LOW);
@@ -69,16 +73,19 @@ void setup() {
      int horizontalLR = readJoystick(DriverLH); // Horizontal Left and Right
 
     if (horizontalLR > 0) {
+      Serial.println("Right");
       analogWrite(HorizontalLeftP, HIGH);
       analogWrite(HorizontalLeftN, LOW);
       analogWrite(HorizontalRightP, LOW);
       analogWrite(HorizontalRightN, HIGH);
     } else if (horizontalLR < 0) {
+      Serial.println("Left");
       analogWrite(HorizontalLeftP, LOW);
       analogWrite(HorizontalLeftN, HIGH);
       analogWrite(HorizontalRightP, HIGH);
       analogWrite(HorizontalRightN, LOW);
     } else {
+      Serial.println("Straight");
       analogWrite(HorizontalLeftP, LOW);
       analogWrite(HorizontalLeftN, LOW);
       analogWrite(HorizontalRightP, LOW);
