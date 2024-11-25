@@ -1,6 +1,7 @@
 #include <Arduino.h>
-// #include <Adafruit_PWMServoDriver.h>
+#include <Adafruit_PWMServoDriver.h>
 #include "Joystick.cpp"
+#include <SPI.h>
 
 // Servo Control
 
@@ -37,11 +38,18 @@
 
 int readJoystick(int pin);
 
+Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
+
 void setup() {
   
   Serial.begin(9600);
   Serial.println("I'm awake!");
   pinMode(LED_BUILTIN, OUTPUT);
+
+  pwm.begin();
+  
+  pwm.setOscillatorFrequency(27000000);
+  pwm.setPWMFreq(50);
 }
 
 void loop() {
