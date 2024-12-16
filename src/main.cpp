@@ -22,8 +22,8 @@
 #define HorizontalRightP 5
 #define HorizontalRightN 4
 #define VerticalLeftP 8
-#define VerticalRightN 9
-#define VerticalLeftP 10
+#define VerticalLeftN 9
+#define VerticalRightP 10
 #define VerticalRightN 11
 
 // Controls
@@ -71,17 +71,19 @@ void loop() {
   int horizontalBF = armElbow.xValue; // Horizontal Back and Forth
   int horizontalLR = armElbow.yValue; // Horizontal Left and Right
 
-  digitalWrite(HorizontalLeftP, HIGH);
-  digitalWrite(HorizontalLeftN, LOW);
-  digitalWrite(HorizontalRightP, HIGH);
-  digitalWrite(HorizontalRightN, LOW);
+  digitalWrite(VerticalLeftP, HIGH);
+  digitalWrite(VerticalLeftN, LOW);
+  digitalWrite(VerticalRightP, HIGH);
+  digitalWrite(VerticalRightN, LOW);
 
   delay(1000);
 
-  digitalWrite(HorizontalLeftP, LOW);
-  digitalWrite(HorizontalLeftN, HIGH);
-  digitalWrite(HorizontalRightP, LOW);
-  digitalWrite(HorizontalRightN, HIGH);
+  digitalWrite(VerticalLeftP, LOW);
+  digitalWrite(VerticalLeftN, HIGH);
+  digitalWrite(VerticalRightP, LOW);
+  digitalWrite(VerticalRightN, HIGH);
+
+  delay(1000);
 
 /*
   if (horizontalBF > 200) {
