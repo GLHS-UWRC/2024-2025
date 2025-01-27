@@ -4,6 +4,7 @@
 #include "Pot.cpp"
 #include <SPI.h>
 #include <Servo.h>
+#include <Wire.h>
 
 // Servo Control
 
@@ -26,6 +27,10 @@
 #define VerticalRightP 10
 #define VerticalRightN 11
 
+// Test Motors
+
+int TestArray[4][2] = {{HorizontalLeftN, HorizontalLeftP}, {HorizontalRightN, HorizontalRightP}, {VerticalLeftN, VerticalLeftP}, {VerticalRightN, VerticalRightP}};
+
 // Controls
 
 #define DriverLH A5 // A7
@@ -45,21 +50,45 @@ Pot claw(ClawPot);
 int readJoystick(int pin);
 int readPot(int pin);
 
-Servo myServo;
+Servo myservo;
 
 Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 
 void setup() {
-  myServo.attach(3);
   
+  pwm.begin(); 
   Serial.begin(9600);
   Serial.println("I'm awake!");
   pinMode(LED_BUILTIN, OUTPUT);
 
   pwm.begin();
+
+  myservo.attach(19);
   
   pwm.setOscillatorFrequency(27000000);
   pwm.setPWMFreq(50);
+
+  for (int i = 0; i < 4; i++) {
+    int pin1 = TestArray[i][0];
+    int pin2 = TestArray[i][1i];
+
+    Serial.print(pin1);
+    Serial.print(" ");
+    Serial.println(pin2);
+
+    digitalWrite(pin1, HIGH);
+    digitalWrite(pin2, LOW);
+
+    delay(1000);
+
+    digitalWrite(pin1, LOW);
+    digitalWrite(pin2, HIGH);
+
+    delay(1000);
+
+    digitalWrite(pin1, LOW);
+    digitalWrite(pin2, LOW);
+  }
 }
 
 void loop() {
@@ -68,22 +97,24 @@ void loop() {
   armElbow.update();
   claw.update();
 
-  int horizontalBF = armElbow.xValue; // Horizontal Back and Forth
-  int horizontalLR = armElbow.yValue; // Horizontal Left and Right
+  pwm.setPWM(1, 0, 180);
 
-  digitalWrite(VerticalLeftP, HIGH);
-  digitalWrite(VerticalLeftN, LOW);
-  digitalWrite(VerticalRightP, HIGH);
-  digitalWrite(VerticalRightN, LOW);
+  // int horizontalBF = armElbow.xValue; // Horizontal Back and Forth
+  // int horizontalLR = armElbow.yValue; // Horizontal Left and Right
 
-  delay(1000);
+  // digitalWrite(VerticalLeftP, HIGH);
+  // digitalWrite(VerticalLeftN, LOW);
+  // digitalWrite(VerticalRightP, HIGH);
+  // digitalWrite(VerticalRightN, LOW);
 
-  digitalWrite(VerticalLeftP, LOW);
-  digitalWrite(VerticalLeftN, HIGH);
-  digitalWrite(VerticalRightP, LOW);
-  digitalWrite(VerticalRightN, HIGH);
+  // delay(1000);
 
-  delay(1000);
+  // digitalWrite(VerticalLeftP, LOW);
+  // digitalWrite(VerticalLeftN, HIGH);
+  // digitalWrite(VerticalRightP, LOW);
+  // digitalWrite(VerticalRightN, HIGH);
+
+  // delay(1000);
 
 /*
   if (horizontalBF > 200) {
