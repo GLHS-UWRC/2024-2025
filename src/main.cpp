@@ -1,5 +1,4 @@
 #include <Arduino.h>
-#include <Adafruit_PWMServoDriver.h>
 #include "Joystick.cpp"
 #include "Pot.cpp"
 #include <SPI.h>
@@ -33,10 +32,10 @@ int TestArray[4][2] = {{HorizontalLeftN, HorizontalLeftP}, {HorizontalRightN, Ho
 
 // Controls
 
-#define DriverLH A5 // A7
-#define DriverLV A0 // A8
-#define DriverRH 9
-#define DriverRV 10
+#define DriverLH A4
+#define DriverLV A5
+#define DriverRH A6
+#define DriverRV A7
 
 #define ArmJoy A0
 #define EleJoy A1
@@ -52,25 +51,27 @@ int readPot(int pin);
 
 Servo myservo;
 
-Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
-
 void setup() {
   
-  pwm.begin(); 
   Serial.begin(9600);
   Serial.println("I'm awake!");
   pinMode(LED_BUILTIN, OUTPUT);
 
-  pwm.begin();
+  digitalWrite(LED_BUILTIN, LOW);
+  delay(500);
+  digitalWrite(LED_BUILTIN, HIGH);
+  delay(500);
+  digitalWrite(LED_BUILTIN, LOW);
+  delay(500);
+  digitalWrite(LED_BUILTIN, HIGH);
+  delay(500);
+  digitalWrite(LED_BUILTIN, LOW);
 
   myservo.attach(19);
-  
-  pwm.setOscillatorFrequency(27000000);
-  pwm.setPWMFreq(50);
 
   for (int i = 0; i < 4; i++) {
     int pin1 = TestArray[i][0];
-    int pin2 = TestArray[i][1i];
+    int pin2 = TestArray[i][1];
 
     Serial.print(pin1);
     Serial.print(" ");
@@ -96,8 +97,6 @@ void loop() {
   delay(100);
   armElbow.update();
   claw.update();
-
-  pwm.setPWM(1, 0, 180);
 
   // int horizontalBF = armElbow.xValue; // Horizontal Back and Forth
   // int horizontalLR = armElbow.yValue; // Horizontal Left and Right
