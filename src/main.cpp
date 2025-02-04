@@ -4,6 +4,7 @@
 #include <SPI.h>
 #include <Servo.h>
 #include <Wire.h>
+#include <Adafruit_PWMServoDriver.h>
 
 // Servo Control
 
@@ -32,15 +33,16 @@ int TestArray[4][2] = {{HorizontalLeftN, HorizontalLeftP}, {HorizontalRightN, Ho
 
 // Controls
 
-#define DriverLH A4
-#define DriverLV A5
-#define DriverRH A6
-#define DriverRV A7
+#define DriverLHPin A7
+#define DriverLVPin A6
+#define DriverRHPin A5
+#define DriverRVPin A4
 
 #define ArmJoy A0
 #define EleJoy A1
 
 Joystick armElbow(ArmJoy, EleJoy);
+Joystick LeftStick(DriverLHPin, DriverLVPin);
 
 #define ClawPot A0
 
@@ -67,12 +69,16 @@ void setup() {
   delay(500);
   digitalWrite(LED_BUILTIN, LOW);
 
+
   myservo.attach(19);
+
+  Serial.println("Starting Motor Test");
 
   for (int i = 0; i < 4; i++) {
     int pin1 = TestArray[i][0];
     int pin2 = TestArray[i][1];
 
+    Serial.print("Testing Motor: ");
     Serial.print(pin1);
     Serial.print(" ");
     Serial.println(pin2);
@@ -90,6 +96,8 @@ void setup() {
     digitalWrite(pin1, LOW);
     digitalWrite(pin2, LOW);
   }
+
+  Serial.println("Motor Test End");
 }
 
 void loop() {
@@ -97,9 +105,12 @@ void loop() {
   delay(100);
   armElbow.update();
   claw.update();
+  LeftStick.update();
 
-  // int horizontalBF = armElbow.xValue; // Horizontal Back and Forth
-  // int horizontalLR = armElbow.yValue; // Horizontal Left and Right
+  int horizontalBF = armElbow.xValue; // Horizontal Back and Forth
+  int horizontalLR = armElbow.yValue; // Horizontal Left and Right
+  int DriverLH = LeftStick.xValue; // Driver Left Horizontal
+  int DriverLV = LeftStick.yValue; // Driver Left Vertical
 
   // digitalWrite(VerticalLeftP, HIGH);
   // digitalWrite(VerticalLeftN, LOW);
@@ -115,26 +126,28 @@ void loop() {
 
   // delay(1000);
 
-/*
-  if (horizontalBF > 200) {
+  Serial.print("Vertical: ");
+  Serial.println(DriverLV);
+
+  if (DriverLV > 200) {
     Serial.println("Forward");
     analogWrite(HorizontalLeftP, HIGH);
     analogWrite(HorizontalLeftN, LOW);
     analogWrite(HorizontalRightP, HIGH);
     analogWrite(HorizontalRightN, LOW);
-  } else if (horizontalBF < -200) {
+  } else if (DriverLV < -200) {
     Serial.println("Backward");
     analogWrite(HorizontalLeftP, LOW);
     analogWrite(HorizontalLeftN, HIGH);
     analogWrite(HorizontalRightP, LOW);
     analogWrite(HorizontalRightN, HIGH);
-  } else if (horizontalLR > 0) {
+  } else if (DriverLH > 0) {
     Serial.println("Right");
     analogWrite(HorizontalLeftP, HIGH);
     analogWrite(HorizontalLeftN, LOW);
     analogWrite(HorizontalRightP, LOW);
     analogWrite(HorizontalRightN, HIGH);
-  } else if (horizontalLR < 0) {
+  } else if (DriverLH < 0) {
     Serial.println("Left");
     analogWrite(HorizontalLeftP, LOW);
     analogWrite(HorizontalLeftN, HIGH);
@@ -148,7 +161,6 @@ void loop() {
     analogWrite(HorizontalRightN, LOW);
   }
 
-  */
 }
 
 int readJoystick(int pin) {
