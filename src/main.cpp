@@ -6,7 +6,7 @@
 #include <Wire.h>
 #include <Adafruit_PWMServoDriver.h>
 
-// Servo Control
+// Servo Control new
 
 #define ServoControl A15
 
