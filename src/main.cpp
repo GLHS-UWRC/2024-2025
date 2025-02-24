@@ -33,10 +33,10 @@ int TestArray[4][2] = {{HorizontalLeftN, HorizontalLeftP}, {HorizontalRightN, Ho
 
 // Controls
 
-#define DriverLHPin A7
+#define DriverLHPin A4
 #define DriverLVPin A6
-#define DriverRHPin A5
-#define DriverRVPin A4
+#define DriverRHPin A7
+#define DriverRVPin A5
 
 #define ArmJoy A0
 #define EleJoy A1
@@ -126,8 +126,8 @@ void loop() {
 
   // delay(1000);
 
-  Serial.print("Vertical: ");
-  Serial.println(DriverLV);
+  // Serial.print("Vertical: ");
+  // Serial.println(DriverLV);
 
   if (DriverLV > 200) {
     Serial.println("Forward");
@@ -141,13 +141,13 @@ void loop() {
     analogWrite(HorizontalLeftN, HIGH);
     analogWrite(HorizontalRightP, LOW);
     analogWrite(HorizontalRightN, HIGH);
-  } else if (DriverLH > 0) {
+  } else if (DriverLH < 0) {
     Serial.println("Right");
     analogWrite(HorizontalLeftP, HIGH);
     analogWrite(HorizontalLeftN, LOW);
     analogWrite(HorizontalRightP, LOW);
     analogWrite(HorizontalRightN, HIGH);
-  } else if (DriverLH < 0) {
+  } else if (DriverLH > 0) {
     Serial.println("Left");
     analogWrite(HorizontalLeftP, LOW);
     analogWrite(HorizontalLeftN, HIGH);
