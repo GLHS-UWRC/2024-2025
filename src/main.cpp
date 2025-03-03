@@ -5,6 +5,7 @@
 #include <Servo.h>
 #include <Wire.h>
 #include <Adafruit_PWMServoDriver.h>
+#include <EEPROM.h>
 
 // Servo Control new
 
@@ -19,12 +20,15 @@
 // Drive
 
 #define HorizontalLeftP 6
-#define HorizontalLeftN 7
-#define HorizontalRightP 5
+#define HorizontalLeftN 9
+
+#define HorizontalRightP 5 // Front Right Foward
 #define HorizontalRightN 4
+
 #define VerticalLeftP 8
-#define VerticalLeftN 9
-#define VerticalRightP 10
+#define VerticalLeftN 7
+
+#define VerticalRightP 10 // Front Right Up
 #define VerticalRightN 11
 
 // Test Motors
@@ -48,10 +52,14 @@ Joystick LeftStick(DriverLHPin, DriverLVPin);
 
 Pot claw(ClawPot);
 
+void motorTest();
+
 int readJoystick(int pin);
 int readPot(int pin);
 
 Servo myservo;
+
+bool skipMoterTest = false;
 
 void setup() {
   
@@ -59,45 +67,25 @@ void setup() {
   Serial.println("I'm awake!");
   pinMode(LED_BUILTIN, OUTPUT);
 
-  digitalWrite(LED_BUILTIN, LOW);
-  delay(500);
-  digitalWrite(LED_BUILTIN, HIGH);
-  delay(500);
-  digitalWrite(LED_BUILTIN, LOW);
-  delay(500);
-  digitalWrite(LED_BUILTIN, HIGH);
-  delay(500);
-  digitalWrite(LED_BUILTIN, LOW);
-
+  if (EEPROM.read(1) == 1) {
+    Serial.println("Starting motor test");
+    motorTest();
+    EEPROM.update(1, 0);
+  } else {
+    Serial.println("Press reset button to start motor test");
+    EEPROM.update(1, 1);
+    for (int i = 0; i < 3; i++) {
+      digitalWrite(LED_BUILTIN, HIGH);
+      delay(500);
+      digitalWrite(LED_BUILTIN, LOW);
+      delay(500);
+    }
+    Serial.println("Skiped motor test");
+    skipMoterTest = true;
+    EEPROM.update(1, 0);
+  };
 
   myservo.attach(19);
-
-  Serial.println("Starting Motor Test");
-
-  for (int i = 0; i < 4; i++) {
-    int pin1 = TestArray[i][0];
-    int pin2 = TestArray[i][1];
-
-    Serial.print("Testing Motor: ");
-    Serial.print(pin1);
-    Serial.print(" ");
-    Serial.println(pin2);
-
-    digitalWrite(pin1, HIGH);
-    digitalWrite(pin2, LOW);
-
-    delay(1000);
-
-    digitalWrite(pin1, LOW);
-    digitalWrite(pin2, HIGH);
-
-    delay(1000);
-
-    digitalWrite(pin1, LOW);
-    digitalWrite(pin2, LOW);
-  }
-
-  Serial.println("Motor Test End");
 }
 
 void loop() {
@@ -182,4 +170,35 @@ int readPot(int pin) {
     mappedValue = 170;
   }
   return mappedValue;
+}
+
+void motorTest() {
+  Serial.println("Starting Motor Test");
+
+  for (int i = 0; i < 4; i++) {
+    int pin1 = TestArray[i][0];
+    int pin2 = TestArray[i][1];
+
+    if (skipMoterTest) break;
+
+    Serial.print("Testing Motor: ");
+    Serial.print(pin1);
+    Serial.print(" ");
+    Serial.println(pin2);
+
+    digitalWrite(pin1, HIGH);
+    digitalWrite(pin2, LOW);
+
+    delay(1000);
+
+    digitalWrite(pin1, LOW);
+    digitalWrite(pin2, HIGH);
+
+    delay(1000);
+
+    digitalWrite(pin1, LOW);
+    digitalWrite(pin2, LOW);
+  }
+
+  Serial.println("Motor Test End");
 }
