@@ -20,7 +20,7 @@
 // Drive
 
 #define HorizontalLeftP 6
-#define HorizontalLeftN 9
+#define HorizontalLeftN 7
 
 #define HorizontalRightP 5 // Front Right Foward
 #define HorizontalRightN 4
